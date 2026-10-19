@@ -1,0 +1,47 @@
+name: Deploy Javadoc to GitHub Pages
+
+on:
+  push:
+    branches: [ "master" ]  # или "main", в зависимости от вашей основной ветки
+
+# Права доступа, необходимые для развертывания на GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Позволяет запускать этот workflow вручную из вкладки Actions
+workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25'  # Укажите вашу версию Java
+          distribution: 'temurin'
+
+      - name: Build Javadoc with Gradle
+        run: ./gradlew clean javadoc  # Или ./gradlew build, если javadoc включен в сборку
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Указываем путь к папке, где генерируется Javadoc
+          path: './build/docs/javadoc/'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
