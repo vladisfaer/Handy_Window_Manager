@@ -1,0 +1,13 @@
+com.ssc14.handy.window_manager
+com.ssc14.handy.window_manager.api
+com.ssc14.handy.window_manager.client
+com.ssc14.handy.window_manager.client.gui
+com.ssc14.handy.window_manager.debug
+com.ssc14.handy.window_manager.item
+com.ssc14.handy.window_manager.mixin
+com.ssc14.handy.window_manager.mixin.network
+com.ssc14.handy.window_manager.network
+com.ssc14.handy.window_manager.registry
+com.ssc14.handy.window_manager.server.ui
+com.ssc14.handy.window_manager.window
+com.ssc14.handy.window_manager.window.access
