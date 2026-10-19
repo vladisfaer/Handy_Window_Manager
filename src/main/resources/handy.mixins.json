@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.ssc14.handy.window_manager.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "ItemStackMixin",
+    "network.PacketModularUISyncAccessor",
+    "network.PacketModularUISyncMixin",
+    "network.PacketUIRPCEventMixin"
+  ],
+  "client": [
+    "MouseHandlerInvoker"
+  ]
+}

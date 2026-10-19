@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ldlib2-ui
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/Low-Drag-MC/LDLib2/refs/heads/1.21/ldlib2-ui.xsd">
+
+    <stylesheet location="ldlib2:lss/mc.lss"/>
+
+    <style>
+        .root {
+        width: 60;
+        height: 60;
+        padding-all: 5;
+        gap-all: 4;
+        }
+
+        .center {
+        horizontal-align: center;
+        }
+
+        .button {
+        width: 80%;
+        height: 20;
+        }
+    </style>
+
+    <root id="root" class="root">
+
+    </root>
+
+</ldlib2-ui>

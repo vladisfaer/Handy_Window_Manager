@@ -1,0 +1,11 @@
+{
+  "item.handy.fidget_toy": "Fidget Toy",
+  "key.handy.toggle_gui_mode": "Toggle GUI mode",
+  "key.handy.debug_ui": "Toggle debug",
+  "gui.handy.fidget_toy": "Fidget Toy",
+  "gui.handy.fidget_toy.clicks": "Clicks: %s",
+  "gui.handy.fidget_toy.click": "Click",
+  "gui.handy.gui_mode": "GUI mode",
+
+  "itemGroup.handy.main": "Handy"
+}

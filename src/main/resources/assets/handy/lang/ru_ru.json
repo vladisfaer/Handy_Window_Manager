@@ -1,0 +1,11 @@
+{
+  "item.handy.fidget_toy": "Фиджет-игрушка",
+  "key.handy.toggle_gui_mode": "Переключить GUI режим",
+  "key.handy.debug_ui": "Переключить отладку GUI",
+  "gui.handy.fidget_toy": "Фиджет-игрушка",
+  "gui.handy.fidget_toy.clicks": "Кликов: %s",
+  "gui.handy.fidget_toy.click": "Клик",
+  "gui.handy.gui_mode": "Режим GUI",
+
+  "itemGroup.handy.main": "Handy"
+}

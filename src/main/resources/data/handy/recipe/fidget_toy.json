@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "R": "minecraft:redstone",
+    "I": "minecraft:iron_nugget",
+    "S": "minecraft:stick"
+  },
+  "pattern": [
+    " R ",
+    " I ",
+    " S "
+  ],
+  "result": {
+    "id": "handy:fidget_toy",
+    "count": 1
+  }
+}

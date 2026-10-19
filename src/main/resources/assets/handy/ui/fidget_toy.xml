@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ldlib2-ui
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/Low-Drag-MC/LDLib2/refs/heads/1.21/ldlib2-ui.xsd">
+
+    <stylesheet location="ldlib2:lss/mc.lss"/>
+
+    <style>
+        .root {
+        width: 60;
+        height: 60;
+        padding-all: 5;
+        gap-all: 4;
+        }
+
+        .center {
+        horizontal-align: center;
+        }
+
+        .button {
+        width: 100%;
+        height: 20;
+        }
+    </style>
+
+    <root id="root" class="root panel_bg">
+
+        <label
+                id="title"
+                class="center">
+            Fidget Toy
+        </label>
+
+        <label
+                id="counter"
+                class="center">
+                Clicks: NaN
+        </label>
+
+        <button
+                id="click_button"
+                class="button"
+                text="CLICK"/>
+
+    </root>
+
+</ldlib2-ui>
