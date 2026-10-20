@@ -7,6 +7,7 @@ displayName="${mod_name}"
 description='''
 LDLib2-based window manager for Minecraft.
 '''
+logoFile="icon.png"
 
 [[dependencies.${mod_id}]]
 modId="neoforge"
