@@ -16,11 +16,13 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent;
 import net.neoforged.neoforge.event.server.ServerStoppedEvent;
+import org.jetbrains.annotations.ApiStatus;
 
 /**
  * Server-side index of world ItemEntities by Handy item-stack instance ID.
  * All access is expected to happen on the logical server thread.
  */
+@ApiStatus.Internal
 @EventBusSubscriber(modid = Handy.MOD_ID)
 public final class ItemEntityRegistry {
     private static final Map<UUID, ItemEntity> ENTITIES_BY_INSTANCE_ID = new HashMap<>();
