@@ -214,8 +214,8 @@ public final class WindowManager {
     public Window openFromMUI(ModularUI modularUI, WindowProperties properties) {
         Objects.requireNonNull(modularUI, "mui");
         int index = windows.size();
-        float x = (lastWidth - Window.DEFAULT_WIDTH) / 2f + index * 16;
-        float y = (lastHeight - Window.DEFAULT_HEIGHT) / 2f + index * 16;
+        float x = (lastWidth - WindowProperties.DEFAULT_WIDTH) / 2f + index * 16;
+        float y = (lastHeight - WindowProperties.DEFAULT_HEIGHT) / 2f + index * 16;
         Window window = createWindowFromMui(modularUI, x, y, properties);
         return openWindow(window);
     }

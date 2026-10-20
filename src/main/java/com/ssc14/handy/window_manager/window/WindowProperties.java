@@ -6,30 +6,32 @@ package com.ssc14.handy.window_manager.window;
  * @author vladisfaer
  */
 public class WindowProperties {
+    public static final int DEFAULT_WIDTH = 100;
+    public static final int DEFAULT_HEIGHT = 100;
     /**
      * Минимальная ширина окна
      */
-    public int minWidth = Window.DEFAULT_WIDTH;
+    public int minWidth = DEFAULT_WIDTH;
     /**
      * Минимальная высота окна
      */
-    public int minHeight = Window.DEFAULT_HEIGHT;
+    public int minHeight = DEFAULT_HEIGHT;
     /**
      * Ширина окна в момент создания
      */
-    public int width = Window.DEFAULT_WIDTH;
+    public int width = DEFAULT_WIDTH;
     /**
      * Высота окна в момент создания
      */
-    public int height = Window.DEFAULT_HEIGHT;
+    public int height = DEFAULT_HEIGHT;
     /**
      * Отступ по горизонтали для изменения размера окна
      */
-    public int resizeMarginX = 5;
+    public int resizeMarginX = 0;
     /**
      * Отступ по вертикали для изменения размера окна
      */
-    public int resizeMarginY = 5;
+    public int resizeMarginY = 0;
     /**
      * Недвижимое ли окно
      */

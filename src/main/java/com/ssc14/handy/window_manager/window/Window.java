@@ -15,9 +15,6 @@ import net.minecraft.client.Minecraft;
  * @author vladisfaer
  */
 public final class Window extends UIElement {
-    public static final int DEFAULT_WIDTH = 200;
-    public static final int DEFAULT_HEIGHT = 100;
-
     private float x;
     private float y;
     private float width;
