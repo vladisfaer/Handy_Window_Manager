@@ -51,7 +51,7 @@ public final class WindowManager {
     private int nextZIndex = 0;
     private Window draggingWindow;
 
-    private final List<Supplier<? extends Window>> STANDARD_WINDOWS =
+    private final List<Supplier<? extends Window>> PERSISTENT_WINDOWS =
             new ArrayList<>();
     private boolean isReady = false;
 
@@ -93,25 +93,25 @@ public final class WindowManager {
     }
 
     /**
-     * Создаёт окно из {@link ModularUI}, используя любой источник данных окна и стандартные параметры
+     * Открывает окно из {@link ModularUI}, используя любой источник данных окна и стандартные параметры
      *
      * @param source источник данных окна
      * @param modularUI {@link ModularUI} из которого будет сделано окно
      * @return созданное окно
      */
-    public Window fromSource(Source source, ModularUI modularUI){
-        return fromSource(source, modularUI, new WindowProperties());
+    public Window openFromSource(Source source, ModularUI modularUI){
+        return openFromSource(source, modularUI, new WindowProperties());
     }
 
     /**
-     * Создаёт окно из {@link ModularUI} и параметров окна, используя любой источник данных окна
+     * Открывает окно из {@link ModularUI} и параметров окна, используя любой источник данных окна
      *
      * @param source источник данных окна
      * @param modularUI {@link ModularUI} из которого будет сделано окно
      * @param properties параметры окна
      * @return созданное окно
      */
-    public Window fromSource(Source source, ModularUI modularUI, WindowProperties properties) {
+    public Window openFromSource(Source source, ModularUI modularUI, WindowProperties properties) {
         Objects.requireNonNull(source, "source");
         Objects.requireNonNull(modularUI, "modularUI");
 
@@ -122,106 +122,106 @@ public final class WindowManager {
             return existing;
         }
 
-        Window window = fromMUI(modularUI, properties);
+        Window window = openFromMUI(modularUI, properties);
         windowsBySource.put(source, window);
         ClientPacketDistributor.sendToServer(new OpenWindowPayload(source));
         return window;
     }
 
     /**
-     * Создаёт окно из {@link ModularUI}, используя {@link ItemStack} как источник данных
+     * Открывает окно из {@link ModularUI}, используя {@link ItemStack} как источник данных
      *
      * @param itemStack предмет, представляющий данные окна
      * @param modularUI {@link ModularUI} из которого будет сделано окно
      * @return созданное окно
      */
-    public Window fromItemStack(ItemStack itemStack, ModularUI modularUI){
-        return fromSource(Source.itemStack(itemStack.get(HandyComponents.INSTANCE_ID)), modularUI);
+    public Window openFromItemStack(ItemStack itemStack, ModularUI modularUI){
+        return openFromSource(Source.itemStack(itemStack.get(HandyComponents.INSTANCE_ID)), modularUI);
     }
     /**
-     * Создаёт окно из {@link ModularUI} и параметров окна, используя {@link ItemStack} как источник данных
+     * Открывает окно из {@link ModularUI} и параметров окна, используя {@link ItemStack} как источник данных
      *
      * @param itemStack предмет, представляющий данные окна
      * @param modularUI {@link ModularUI} из которого будет сделано окно
      * @return созданное окно
      */
-    public Window fromItemStack(ItemStack itemStack, ModularUI modularUI, WindowProperties properties){
-        return fromSource(Source.itemStack(itemStack.get(HandyComponents.INSTANCE_ID)), modularUI, properties);
+    public Window openFromItemStack(ItemStack itemStack, ModularUI modularUI, WindowProperties properties){
+        return openFromSource(Source.itemStack(itemStack.get(HandyComponents.INSTANCE_ID)), modularUI, properties);
     }
 
     /**
-     * Создаёт окно из {@link ModularUI}, используя {@link Entity} как источник данных
+     * Открывает окно из {@link ModularUI}, используя {@link Entity} как источник данных
      *
      * @param entity сущность, представляющая данные окна
      * @param modularUI {@link ModularUI} из которого будет сделано окно
      * @return созданное окно
      */
-    public Window fromEntity(Entity entity, ModularUI modularUI){
-        return fromSource(Source.entity(entity.getUUID()), modularUI);
+    public Window openFromEntity(Entity entity, ModularUI modularUI){
+        return openFromSource(Source.entity(entity.getUUID()), modularUI);
     }
     /**
-     * Создаёт окно из {@link ModularUI} и параметров окна, используя {@link Entity} как источник данных
+     * Открывает окно из {@link ModularUI} и параметров окна, используя {@link Entity} как источник данных
      *
      * @param entity сущность, представляющая данные окна
      * @param modularUI {@link ModularUI} из которого будет сделано окно
      * @param properties параметры окна
      * @return созданное окно
      */
-    public Window fromEntity(Entity entity, ModularUI modularUI, WindowProperties properties){
-        return fromSource(Source.entity(entity.getUUID()), modularUI, properties);
+    public Window openFromEntity(Entity entity, ModularUI modularUI, WindowProperties properties){
+        return openFromSource(Source.entity(entity.getUUID()), modularUI, properties);
     }
 
     /**
-     * Создаёт окно из {@link ModularUI}, используя {@link BlockEntity} как источник данных
+     * Открывает окно из {@link ModularUI}, используя {@link BlockEntity} как источник данных
      *
      * @param blockEntity блок, представляющий данные окна
      * @param modularUI {@link ModularUI} из которого будет сделано окно
      * @return созданное окно
      */
-    public Window fromBlockEntity(BlockEntity blockEntity, ModularUI modularUI){
-        return fromBlockEntity(blockEntity, modularUI, new WindowProperties());
+    public Window openFromBlockEntity(BlockEntity blockEntity, ModularUI modularUI){
+        return openFromBlockEntity(blockEntity, modularUI, new WindowProperties());
     }
     /**
-     * Создаёт окно из {@link ModularUI} и параметров окна, используя {@link BlockEntity} как источник данных окна
+     * Открывает окно из {@link ModularUI} и параметров окна, используя {@link BlockEntity} как источник данных окна
      *
      * @param blockEntity блок, представляющий данные окна
      * @param modularUI {@link ModularUI} из которого будет сделано окно
      * @param properties параметры окна
      * @return созданное окно
      */
-    public Window fromBlockEntity(BlockEntity blockEntity, ModularUI modularUI, WindowProperties properties){
+    public Window openFromBlockEntity(BlockEntity blockEntity, ModularUI modularUI, WindowProperties properties){
         assert blockEntity.getLevel() != null;
-        return fromSource(Source.blockEntity(new GlobalPos(blockEntity.getLevel().dimension(), blockEntity.getBlockPos())), modularUI, properties);
+        return openFromSource(Source.blockEntity(new GlobalPos(blockEntity.getLevel().dimension(), blockEntity.getBlockPos())), modularUI, properties);
     }
 
     /**
-     * Создаёт окно из {@link ModularUI} без серверного источника окна
+     * Открывает окно из {@link ModularUI} без серверного источника окна
      *
      * @param modularUI {@link ModularUI} из которого будет сделано окно
      * @return созданное окно
      */
-    public Window fromMUI(ModularUI modularUI) {
+    public Window openFromMUI(ModularUI modularUI) {
         Objects.requireNonNull(modularUI, "mui");
-        return fromMUI(modularUI, new WindowProperties());
+        return openFromMUI(modularUI, new WindowProperties());
     }
     /**
-     * Создаёт окно из {@link ModularUI} и параметров окна без серверного источника окна
-     *
+     * Открывает окно из {@link ModularUI} и параметров окна без серверного источника окна
+     * 
      * @param modularUI {@link ModularUI} из которого будет сделано окно
      * @param properties параметры окна
      * @return созданное окно
      */
-    public Window fromMUI(ModularUI modularUI, WindowProperties properties) {
+    public Window openFromMUI(ModularUI modularUI, WindowProperties properties) {
         Objects.requireNonNull(modularUI, "mui");
         int index = windows.size();
         float x = (lastWidth - Window.DEFAULT_WIDTH) / 2f + index * 16;
         float y = (lastHeight - Window.DEFAULT_HEIGHT) / 2f + index * 16;
         Window window = createWindowFromMui(modularUI, x, y, properties);
-        return fromWindow(window);
+        return openWindow(window);
     }
 
     /**
-     * Трансформирует {@link ModularUI} в окно
+     * Создаёт окно из {@link ModularUI}
      * @param modularUI {@link ModularUI} который будет трансформирован
      * @param _x координата окна по горизонтали
      * @param _y координата окна по вертикали
@@ -250,7 +250,7 @@ public final class WindowManager {
      * @param window окно, которое будет открыто
      * @return открытое окно
      */
-    public Window fromWindow(Window window){
+    public Window openWindow(Window window){
         if (!ensureReady()) {
             throw new IllegalStateException("Cannot open a window without a player");
         }
@@ -261,13 +261,13 @@ public final class WindowManager {
     }
 
     /**
-     * Добавляет окно в список стандартных окон
+     * Регистрирует постоянное окно
      *
-     * <p>Стандартные окна - это окна, которые автоматически открываются при входе в игру и никогда не закрываются
+     * <p>Постоянные окна - это окна, которые автоматически открываются при входе в игру и никогда не закрываются
      * @param factory Фабрика, предоставляющая окно
      */
-    public void addStandardWindow(Supplier<? extends Window> factory) {
-        STANDARD_WINDOWS.add(Objects.requireNonNull(factory));
+    public void registerPersistentWindow(Supplier<? extends Window> factory) {
+        PERSISTENT_WINDOWS.add(Objects.requireNonNull(factory));
     }
 
     /**
@@ -316,10 +316,10 @@ public final class WindowManager {
         return windows.contains(window);
     }
 
-    private void openStandardWindows() {
-        for (Supplier<? extends Window> factory : List.copyOf(STANDARD_WINDOWS)) {
+    private void openPersistentWindows() {
+        for (Supplier<? extends Window> factory : List.copyOf(PERSISTENT_WINDOWS)) {
             Window window = factory.get();
-            Window newWindow = fromWindow(window);
+            Window newWindow = openWindow(window);
             newWindow.layout(layoutStyle -> layoutStyle
                     .bottom(10)
                     .width(200)
@@ -403,7 +403,7 @@ public final class WindowManager {
             discard();
             owner = player;
             mainUI = RootMUI.createUI(player);
-            openStandardWindows();
+            openPersistentWindows();
         }
 
         int width = mc.getWindow().getGuiScaledWidth();

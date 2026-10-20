@@ -50,7 +50,7 @@ public abstract class ItemUIProvider extends Item implements ItemStackLifecycle 
 
         openWindows.remove(instanceId);
 
-        Window window = WindowManager.INSTANCE.fromItemStack(stack, getUI(instanceId, player), getWindowProperties());
+        Window window = WindowManager.INSTANCE.openFromItemStack(stack, getUI(instanceId, player), getWindowProperties());
 
         openWindows.put(instanceId, window);
         window.setCloseCallback(() -> openWindows.remove(instanceId, window));

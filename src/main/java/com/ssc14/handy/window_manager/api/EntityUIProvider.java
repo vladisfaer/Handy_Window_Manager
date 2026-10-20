@@ -39,7 +39,7 @@ public interface EntityUIProvider {
 
         openWindows.remove(id);
 
-        Window window = WindowManager.INSTANCE.fromEntity(entity, getUI(id, player), getWindowProperties());
+        Window window = WindowManager.INSTANCE.openFromEntity(entity, getUI(id, player), getWindowProperties());
 
         openWindows.put(id, window);
         window.setCloseCallback(() -> openWindows.remove(id, window));

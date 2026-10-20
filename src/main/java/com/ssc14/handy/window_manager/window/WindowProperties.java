@@ -121,7 +121,16 @@ public class WindowProperties {
      * @return Изменённые параметры окна
      */
     public WindowProperties immovable(){
-        this.immovable = true;
+        return immovable(true);
+    }
+
+    /**
+     * Переключает недвижимость окна
+     * @param value будет ли окно недвижимым
+     * @return Изменённые параметры окна
+     */
+    public WindowProperties immovable(boolean value){
+        this.immovable = value;
         return this;
     }
 
@@ -130,7 +139,16 @@ public class WindowProperties {
      * @return Изменённые параметры окна
      */
     public WindowProperties fullscreen(){
-        this.fullscreen = true;
+        return fullscreen(true);
+    }
+
+    /**
+     * Переключает полноэкранность окна
+     * @param value будет ли окно полноэкранным
+     * @return Изменённые параметры окна
+     */
+    public WindowProperties fullscreen(boolean value){
+        this.fullscreen = value;
         return this;
     }
 

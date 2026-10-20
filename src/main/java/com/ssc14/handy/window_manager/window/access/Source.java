@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * Источник окна. Является способом идентифицировать окна и их источники между клиентом и сервером
+ * Универсальный источник окна. Является способом идентифицировать окна и их источники между клиентом и сервером
  * {@link net.minecraft.world.item.ItemStack} и {@link net.minecraft.world.entity.Entity} идентифицируются с помощью {@link UUID}, а {@link net.minecraft.world.level.block.entity.BlockEntity} с помощью {@link GlobalPos}
  */
 public final class Source {

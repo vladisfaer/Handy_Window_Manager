@@ -44,7 +44,7 @@ public interface BlockEntityUIProvider {
 
         openWindows.remove(globalPos);
 
-        Window window = WindowManager.INSTANCE.fromBlockEntity(blockEntity, getUI(globalPos, player), getWindowProperties());
+        Window window = WindowManager.INSTANCE.openFromBlockEntity(blockEntity, getUI(globalPos, player), getWindowProperties());
 
         openWindows.put(globalPos, window);
         window.setCloseCallback(() -> openWindows.remove(globalPos, window));
