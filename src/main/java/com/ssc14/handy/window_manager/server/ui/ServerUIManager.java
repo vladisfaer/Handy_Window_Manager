@@ -20,6 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.*;
 
@@ -48,6 +49,7 @@ public final class ServerUIManager {
         return PLAYER_UIS.get(player.getUUID());
     }
 
+    @ApiStatus.Internal
     public static void tick(ServerPlayer player) {
         ModularUI mui = get(player);
         if (mui != null) {
@@ -55,6 +57,7 @@ public final class ServerUIManager {
         }
     }
 
+    @ApiStatus.Internal
     public static void remove(ServerPlayer player) {
         UUID playerId = player.getUUID();
         PLAYER_WINDOWS.remove(playerId);
@@ -175,6 +178,7 @@ public final class ServerUIManager {
         attach(player, source, ui);
     }
 
+    @ApiStatus.Internal
     public static void handleRPC(ServerPlayer player, byte[] eventData) {
         ModularUI mui = get(player);
         if (mui == null) return;
@@ -186,6 +190,7 @@ public final class ServerUIManager {
         );
     }
 
+    @ApiStatus.Internal
     public static void handleSync(ServerPlayer player, byte[] data) {
         ModularUI mui = get(player);
         if (mui == null) return;

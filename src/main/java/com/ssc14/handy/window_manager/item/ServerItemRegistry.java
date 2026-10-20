@@ -2,6 +2,7 @@ package com.ssc14.handy.window_manager.item;
 
 import com.ssc14.handy.window_manager.registry.HandyComponents;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
@@ -34,6 +35,7 @@ public final class ServerItemRegistry {
     private ServerItemRegistry() {
     }
 
+    @ApiStatus.Internal
     public void register(ItemStack stack) {
         cleanup();
 
@@ -51,6 +53,7 @@ public final class ServerItemRegistry {
                 .add(new StackReference(id, stack, queue));
     }
 
+    @ApiStatus.Internal
     public void unregister(ItemStack stack) {
         cleanup();
 

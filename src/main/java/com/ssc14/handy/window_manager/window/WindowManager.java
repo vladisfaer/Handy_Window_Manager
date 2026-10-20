@@ -18,6 +18,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
+import org.jetbrains.annotations.ApiStatus;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -328,12 +329,14 @@ public final class WindowManager {
         }
     }
 
+    @ApiStatus.Internal
     public void tick() {
         if (ensureReady()) {
             mainUI.tick();
         }
     }
 
+    @ApiStatus.Internal
     public void render(GuiGraphicsExtractor graphics) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.screen != null || !ensureReady()) {
@@ -356,6 +359,7 @@ public final class WindowManager {
         ClientGuiModeEvents.updateMouseMovement(mouseX, mouseY);
     }
 
+    @ApiStatus.Internal
     public boolean mousePressed(MouseButtonEvent event) {
         if (!ensureReady()) {
             return false;
@@ -363,6 +367,7 @@ public final class WindowManager {
         return ModularUIClientAccess.getWidget(mainUI).mouseClicked(event, false);
     }
 
+    @ApiStatus.Internal
     public void mouseReleased(MouseButtonEvent event) {
         if (ensureReady()) {
             ModularUIClientAccess.getWidget(mainUI).mouseReleased(event);
@@ -373,12 +378,14 @@ public final class WindowManager {
         }
     }
 
+    @ApiStatus.Internal
     public void mouseMoved(double mouseX, double mouseY) {
         if (ensureReady()) {
             ModularUIClientAccess.getWidget(mainUI).mouseMoved(mouseX, mouseY);
         }
     }
 
+    @ApiStatus.Internal
     public void mouseDragged(MouseButtonEvent event, double deltaX, double deltaY) {
         if (draggingWindow != null) {
             draggingWindow.dragBy(deltaX, deltaY);
@@ -390,6 +397,7 @@ public final class WindowManager {
         }
     }
 
+    @ApiStatus.Internal
     public boolean ensureReady() {
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
@@ -417,6 +425,7 @@ public final class WindowManager {
         return true;
     }
 
+    @ApiStatus.Internal
     public void discard() {
         if (mainUI != null) {
             mainUI.onRemoved();
@@ -433,6 +442,7 @@ public final class WindowManager {
         isReady = false;
     }
 
+    @ApiStatus.Internal
     public void handleSync(Player player, byte[] data) {
         ModularUI mui = mainUI;
         if (mui == null) {

@@ -3,6 +3,7 @@ package com.ssc14.handy.window_manager.client.gui;
 import com.ssc14.handy.window_manager.mixin.MouseHandlerInvoker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.input.MouseButtonInfo;
+import org.jetbrains.annotations.ApiStatus;
 import org.lwjgl.glfw.GLFW;
 
 /**
@@ -46,6 +47,7 @@ public final class GuiMode {
         setActive(!active);
     }
 
+    @ApiStatus.Internal
     public static void update() {
         Minecraft mc = Minecraft.getInstance();
 
