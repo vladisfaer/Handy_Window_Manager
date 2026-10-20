@@ -6,6 +6,7 @@ import com.lowdragmc.lowdraglib2.gui.ui.UI;
 import com.lowdragmc.lowdraglib2.gui.ui.UIElement;
 import com.ssc14.handy.window_manager.Handy;
 import dev.vfyjxf.taffy.style.TaffyDisplay;
+import dev.vfyjxf.taffy.style.TaffyPosition;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.resources.Identifier;
@@ -27,6 +28,8 @@ public class RootMUI {
         assert screen != null;
         var root = new UIElement()
                 .layout(layout -> layout
+                        .positionType(TaffyPosition.ABSOLUTE)
+                        .bottom(0)
                         .display(TaffyDisplay.FLEX)
                         .widthPercent(100)
                         .heightPercent(100)
