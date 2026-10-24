@@ -24,7 +24,6 @@ public class FidgetToyItem extends ItemUIProvider {
     public @NonNull InteractionResult use(Level level, @NonNull Player player, @NonNull InteractionHand hand) {
         if (level.isClientSide()) {
             openUI(player.getItemInHand(hand), player);
-            GuiMode.enter();
         }
 
         return InteractionResult.SUCCESS;

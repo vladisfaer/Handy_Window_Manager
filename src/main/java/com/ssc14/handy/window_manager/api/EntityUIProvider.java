@@ -1,6 +1,7 @@
 package com.ssc14.handy.window_manager.api;
 
 import com.lowdragmc.lowdraglib2.gui.ui.ModularUI;
+import com.ssc14.handy.window_manager.client.gui.GuiMode;
 import com.ssc14.handy.window_manager.window.Window;
 import com.ssc14.handy.window_manager.window.WindowManager;
 import com.ssc14.handy.window_manager.window.WindowProperties;
@@ -23,11 +24,23 @@ public interface EntityUIProvider {
 
     /**
      * Открывает окно для этой сущности с помощью {@link WindowManager}
+     * и автоматически входит в GUI режим
      *
      * @param entity сущность, представляющая данные этого окна
      * @param player игрок, открывающий окно
      */
     default void openUI(Entity entity, Player player) {
+        openUI(entity, player, true);
+    }
+
+    /**
+     * Открывает окно для этой сущности с помощью {@link WindowManager}
+     *
+     * @param entity сущность, представляющая данные этого окна
+     * @param player игрок, открывающий окно
+     * @param guiMode будет ли автоматически включен GUI режим
+     */
+    default void openUI(Entity entity, Player player, boolean guiMode) {
         UUID id = entity.getUUID();
 
         Window existing = openWindows.get(id);
@@ -43,6 +56,8 @@ public interface EntityUIProvider {
 
         openWindows.put(id, window);
         window.setCloseCallback(() -> openWindows.remove(id, window));
+
+        if(guiMode) GuiMode.enter();
     }
 
     /**

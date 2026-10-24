@@ -1,6 +1,7 @@
 package com.ssc14.handy.window_manager.api;
 
 import com.lowdragmc.lowdraglib2.gui.ui.ModularUI;
+import com.ssc14.handy.window_manager.client.gui.GuiMode;
 import com.ssc14.handy.window_manager.item.ItemEntityRegistry;
 import com.ssc14.handy.window_manager.item.ServerItemRegistry;
 import com.ssc14.handy.window_manager.registry.HandyComponents;
@@ -33,11 +34,23 @@ public abstract class ItemUIProvider extends Item implements ItemStackLifecycle 
 
     /**
      * Открывает окно этого предмета с помощью {@link WindowManager}
+     * и автоматически входит в GUI режим
      *
      * @param stack предмет, представляющий данные этого окна
      * @param player игрок, открывающий окно
      */
     public void openUI(ItemStack stack, Player player) {
+        openUI(stack, player, true);
+    }
+
+    /**
+     * Открывает окно этого предмета с помощью {@link WindowManager}
+     *
+     * @param stack предмет, представляющий данные этого окна
+     * @param player игрок, открывающий окно
+     * @param guiMode будет ли автоматически включен GUI режим
+     */
+    public void openUI(ItemStack stack, Player player, boolean guiMode) {
         UUID instanceId = stack.get(HandyComponents.INSTANCE_ID);
 
         WindowManager manager = WindowManager.INSTANCE;
@@ -54,6 +67,8 @@ public abstract class ItemUIProvider extends Item implements ItemStackLifecycle 
 
         openWindows.put(instanceId, window);
         window.setCloseCallback(() -> openWindows.remove(instanceId, window));
+
+        if (guiMode) GuiMode.enter();
     }
 
     /**
