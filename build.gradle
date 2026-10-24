@@ -197,7 +197,7 @@ publishing {
                         .getOrElse('')
 
                 password = project.providers.gradleProperty('gpr.key')
-                        .orElse(project.providers.environmentVariable('GITHUB_TOKEN'))
+                        .orElse(project.providers.environmentVariable('PACKAGES_TOKEN'))
                         .getOrElse('')
             }
         }
