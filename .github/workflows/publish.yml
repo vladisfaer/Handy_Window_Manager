@@ -1,19 +1,19 @@
-name: Publish Maven package
+name: Publish Maven Repository
 
 on:
   release:
     types: [published]
+  workflow_dispatch:
 
 permissions:
   contents: read
-  packages: write
 
 jobs:
   publish:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout module
         uses: actions/checkout@v6
 
       - name: Set up Java
@@ -22,11 +22,41 @@ jobs:
           distribution: temurin
           java-version: '25'
 
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+        
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Build and publish
-        run: ./gradlew --no-daemon clean publish
-        env:
-          GITHUB_ACTOR: ${{ github.actor }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout Maven repository
+        uses: actions/checkout@v6
+        with:
+          repository: vladisfaer/handy
+          ref: main
+          path: maven-host
+          token: ${{ secrets.PAGES_REPO_TOKEN }}
+
+      - name: Publish artifacts
+        run: >
+          ./gradlew --no-daemon clean publish
+          -PmavenRepoDir="${GITHUB_WORKSPACE}/maven-host/docs/repository"
+
+      - name: Commit Maven artifacts
+        working-directory: maven-host
+        run: |
+          touch docs/.nojekyll
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add docs/repository docs/.nojekyll
+
+          if git diff --cached --quiet; then
+            echo "No Maven repository changes."
+            exit 0
+          fi
+
+          git commit -m "Publish Maven artifacts from ${GITHUB_REPOSITORY}@${GITHUB_REF_NAME}"
+          git pull --rebase origin main
+          git push origin HEAD:main
+
