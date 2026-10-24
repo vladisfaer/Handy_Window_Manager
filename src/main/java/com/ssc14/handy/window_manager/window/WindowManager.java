@@ -319,13 +319,7 @@ public final class WindowManager {
 
     private void openPersistentWindows() {
         for (Supplier<? extends Window> factory : List.copyOf(PERSISTENT_WINDOWS)) {
-            Window window = factory.get();
-            Window newWindow = openWindow(window);
-            newWindow.layout(layoutStyle -> layoutStyle
-                    .bottom(10)
-                    .width(200)
-                    .height(50)
-            );
+            openWindow(factory.get());
         }
     }
 

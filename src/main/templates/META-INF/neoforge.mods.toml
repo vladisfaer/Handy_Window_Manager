@@ -30,12 +30,5 @@ versionRange="[26.1.2.39,)"
 ordering="AFTER"
 side="BOTH"
 
-[[dependencies.${mod_id}]]
-modId = "curios"
-type = "required"
-versionRange = "[15.0.0,)"
-ordering = "AFTER"
-side = "BOTH"
-
 [[mixins]]
 config = "handy.mixins.json"
