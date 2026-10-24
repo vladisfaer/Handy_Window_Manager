@@ -163,15 +163,43 @@ sourceSets.main.resources.srcDir generateModMetadata
 neoForge.ideSyncTask generateModMetadata
 
 // Example configuration to allow publishing using the maven-publish plugin
+java {
+    withSourcesJar()
+}
+
 publishing {
     publications {
         register('mavenJava', MavenPublication) {
             from components.java
+
+            groupId = group
+            artifactId = 'window-manager'
+            version = project.version.toString()
+
+            pom {
+                name = 'Handy'
+                description = 'LDLib2-based window manager for Minecraft'
+                url = 'https://github.com/vladisfaer/handy'
+            }
         }
     }
+
     repositories {
         maven {
-            url "file://${project.projectDir}/repo"
+            name = 'GitHubPackages'
+            url = uri(
+                    'https://maven.pkg.github.com/vladisfaer/handy'
+            )
+
+            credentials {
+                username = project.providers.gradleProperty('gpr.user')
+                        .orElse(project.providers.environmentVariable('GITHUB_ACTOR'))
+                        .getOrElse('')
+
+                password = project.providers.gradleProperty('gpr.key')
+                        .orElse(project.providers.environmentVariable('GITHUB_TOKEN'))
+                        .getOrElse('')
+            }
         }
     }
 }
