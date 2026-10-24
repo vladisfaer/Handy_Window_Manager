@@ -19,8 +19,11 @@ import net.neoforged.neoforge.event.server.ServerStoppedEvent;
 import org.jetbrains.annotations.ApiStatus;
 
 /**
- * Server-side index of world ItemEntities by Handy item-stack instance ID.
- * All access is expected to happen on the logical server thread.
+ * Реестр всех {@link ItemEntity}
+ *
+ * <p>Отслеживает появление и уничтожение {@link ItemEntity} с помощью встроенных событий майнкрафта.
+ *
+ * @author vladisfaer
  */
 @ApiStatus.Internal
 @EventBusSubscriber(modid = Handy.MOD_ID)
@@ -31,8 +34,9 @@ public final class ItemEntityRegistry {
     private ItemEntityRegistry() {}
 
     /**
-     * Returns the currently loaded ItemEntity for the given Handy instance ID,
-     * or {@code null} if the ID has no currently loaded ItemEntity.
+     * Получает {@link ItemEntity} по его uuid
+     * @param instanceId uuid искомого {@link ItemEntity}
+     * @return {@link ItemEntity} с соответствующим uuid
      */
     public static ItemEntity get(UUID instanceId) {
         if (instanceId == null) return null;
@@ -40,8 +44,6 @@ public final class ItemEntityRegistry {
         ItemEntity entity = ENTITIES_BY_INSTANCE_ID.get(instanceId);
         if (entity == null) return null;
 
-        // ItemEntity.setItem can replace the contents without a level event.
-        // Repair the index on lookup if the entity no longer contains this ID.
         UUID currentInstanceId = getInstanceId(entity.getItem());
         if (!instanceId.equals(currentInstanceId)) {
             refresh(entity);
@@ -51,12 +53,19 @@ public final class ItemEntityRegistry {
         return entity;
     }
 
-    /** Returns whether the registry has seen this ID, even if its value is null. */
+    /**
+     * Проверяет наличие {@link ItemEntity} с данным uuid в реестре
+     * @param instanceId uuid искомого {@link ItemEntity}
+     * @return наличие в реестре
+     */
     public static boolean hasEntry(UUID instanceId) {
         return instanceId != null && ENTITIES_BY_INSTANCE_ID.containsKey(instanceId);
     }
 
-    /** Re-indexes an entity after its ItemStack changes. */
+    /**
+     * Обновляет данные в реестре об {@link ItemEntity}
+     * @param entity сущность, данные которой в реестре обновляются
+     */
     public static void refresh(ItemEntity entity) {
         if (!(entity.level() instanceof ServerLevel)) return;
 
@@ -69,12 +78,16 @@ public final class ItemEntityRegistry {
         INSTANCE_IDS_BY_ENTITY_ID.put(entity.getUUID(), instanceId);
     }
 
-    /** Total number of instance IDs currently retained by the registry, including null entries. */
+    /**
+     * Возвращает количество записей об ItemEntity в реестре
+     */
     public static int getEntryCount() {
         return ENTITIES_BY_INSTANCE_ID.size();
     }
 
-    /** Number of entries whose value currently points to an ItemEntity. */
+    /**
+     * Возвращает количество реальных ItemEntity в реестре
+     */
     public static int getLiveEntityCount() {
         int count = 0;
         for (ItemEntity entity : ENTITIES_BY_INSTANCE_ID.values()) {
@@ -83,7 +96,9 @@ public final class ItemEntityRegistry {
         return count;
     }
 
-    /** Number of retained entries whose value is null. */
+    /**
+     * Возвращает количество {@code null} записей в реестре
+     */
     public static int getNullEntryCount() {
         int count = 0;
         for (ItemEntity entity : ENTITIES_BY_INSTANCE_ID.values()) {
@@ -93,8 +108,7 @@ public final class ItemEntityRegistry {
     }
 
     /**
-     * Returns a read-only snapshot for debug commands. The map intentionally
-     * permits null values, because null means the ID is known but not loaded.
+     * Возвращает полный список записей для отладки
      */
     public static Map<UUID, ItemEntity> getDebugEntries() {
         return Collections.unmodifiableMap(new LinkedHashMap<>(ENTITIES_BY_INSTANCE_ID));
@@ -125,13 +139,10 @@ public final class ItemEntityRegistry {
     private static void untrack(ItemEntity entity) {
         UUID instanceId = INSTANCE_IDS_BY_ENTITY_ID.remove(entity.getUUID());
 
-        // The reverse index can be absent if this entity had no instance ID
-        // when it joined, or if it was not indexed before this class loaded.
         if (instanceId == null) {
             instanceId = getInstanceId(entity.getItem());
         }
 
-        // Do not clear a mapping that has since been replaced by another entity.
         if (instanceId != null && ENTITIES_BY_INSTANCE_ID.get(instanceId) == entity) {
             ENTITIES_BY_INSTANCE_ID.put(instanceId, null);
         }
