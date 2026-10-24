@@ -1,6 +1,7 @@
 package com.ssc14.handy.window_manager.api;
 
 import com.lowdragmc.lowdraglib2.gui.ui.ModularUI;
+import com.ssc14.handy.window_manager.client.gui.GuiMode;
 import com.ssc14.handy.window_manager.window.Window;
 import com.ssc14.handy.window_manager.window.WindowManager;
 import com.ssc14.handy.window_manager.window.WindowProperties;
@@ -27,11 +28,23 @@ public interface BlockEntityUIProvider {
 
     /**
      * Открывает окно для этого блока с помощью {@link WindowManager}
+     * и автоматически входит в GUI режим
      *
      * @param blockEntity блок, представляющий данные этого окна
      * @param player игрок, открывающий окно
      */
     default void openUI(BlockEntity blockEntity, Player player) {
+        openUI(blockEntity, player, true);
+    }
+
+    /**
+     * Открывает окно для этого блока с помощью {@link WindowManager}
+     *
+     * @param blockEntity блок, представляющий данные этого окна
+     * @param player игрок, открывающий окно
+     *
+     */
+    default void openUI(BlockEntity blockEntity, Player player, boolean guiMode) {
         if (blockEntity.getLevel() == null) return;
         GlobalPos globalPos = new GlobalPos(blockEntity.getLevel().dimension(), blockEntity.getBlockPos());
 
@@ -48,6 +61,8 @@ public interface BlockEntityUIProvider {
 
         openWindows.put(globalPos, window);
         window.setCloseCallback(() -> openWindows.remove(globalPos, window));
+
+        if(guiMode) GuiMode.enter();
     }
 
     /**
