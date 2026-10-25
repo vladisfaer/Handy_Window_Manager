@@ -5,6 +5,9 @@ import net.neoforged.bus.api.Event;
 
 import java.util.Objects;
 
+/**
+ * Событие, вызываемое в момент регистрации постоянного окна
+ */
 public final class RegisterPersistentWindowsEvent extends Event {
     private final IWindowHandler manager;
 
@@ -12,6 +15,9 @@ public final class RegisterPersistentWindowsEvent extends Event {
         this.manager = Objects.requireNonNull(manager);
     }
 
+    /**
+     * Возвращает клиентское или серверное представление оконного менеджера для регистрации
+     */
     public IWindowHandler getManager() {
         return manager;
     }
