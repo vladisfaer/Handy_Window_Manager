@@ -4,6 +4,7 @@ import com.lowdragmc.lowdraglib2.gui.ui.ModularUI;
 import com.lowdragmc.lowdraglib2.gui.ui.ModularUIClientAccess;
 import com.lowdragmc.lowdraglib2.gui.ui.ModularUIWidget;
 import com.lowdragmc.lowdraglib2.utils.ByteBufUtil;
+import com.ssc14.handy.window_manager.api.IWindowHandler;
 import com.ssc14.handy.window_manager.client.gui.ClientGuiModeEvents;
 import com.ssc14.handy.window_manager.client.gui.GuiMode;
 import com.ssc14.handy.window_manager.network.OpenWindowPayload;
@@ -33,7 +34,7 @@ import java.util.function.Supplier;
  *
  * @author vladisfaer
  */
-public final class WindowManager {
+public final class WindowManager implements IWindowHandler {
     /**
      * Экземпляр оконного менеджера
      */
@@ -267,6 +268,7 @@ public final class WindowManager {
      * <p>Постоянные окна - это окна, которые автоматически открываются при входе в игру и никогда не закрываются
      * @param factory Фабрика, предоставляющая окно
      */
+    @Override
     public void registerPersistentWindow(Supplier<? extends Window> factory) {
         PERSISTENT_WINDOWS.add(Objects.requireNonNull(factory));
     }
