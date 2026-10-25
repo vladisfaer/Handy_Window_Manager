@@ -54,7 +54,7 @@ public final class WindowManager implements IWindowHandler {
     private int nextZIndex = 0;
     private Window draggingWindow;
 
-    private final List<Supplier<? extends Window>> PERSISTENT_WINDOWS =
+    private final List<Function<Player, ? extends Window>> PERSISTENT_WINDOWS =
             new ArrayList<>();
     private boolean isReady = false;
 
@@ -272,14 +272,13 @@ public final class WindowManager implements IWindowHandler {
     @ApiStatus.Internal
     @Override
     public void registerPersistentWindow(Supplier<? extends Window> factory) {
-        PERSISTENT_WINDOWS.add(Objects.requireNonNull(factory));
+        PERSISTENT_WINDOWS.add((_)->Objects.requireNonNull(factory).get());
     }
 
     @ApiStatus.Internal
     @Override
     public void registerPersistentWindow(Function<Player, ? extends Window> factory) {
-        Player player = Minecraft.getInstance().player;
-        PERSISTENT_WINDOWS.add(()->Objects.requireNonNull(factory).apply(player));
+        PERSISTENT_WINDOWS.add(Objects.requireNonNull(factory));
     }
 
     /**
@@ -328,9 +327,9 @@ public final class WindowManager implements IWindowHandler {
         return windows.contains(window);
     }
 
-    private void openPersistentWindows() {
-        for (Supplier<? extends Window> factory : List.copyOf(PERSISTENT_WINDOWS)) {
-            openWindow(factory.get());
+    private void openPersistentWindows(Player player) {
+        for (Function<Player, ? extends Window> factory : List.copyOf(PERSISTENT_WINDOWS)) {
+            openWindow(factory.apply(player));
         }
     }
 
@@ -416,7 +415,7 @@ public final class WindowManager implements IWindowHandler {
             discard();
             owner = player;
             mainUI = RootMUI.createUI(player);
-            openPersistentWindows();
+            openPersistentWindows(player);
         }
 
         int width = mc.getWindow().getGuiScaledWidth();
