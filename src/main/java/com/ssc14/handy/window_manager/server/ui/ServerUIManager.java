@@ -19,6 +19,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.common.NeoForge;
@@ -27,6 +28,7 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -37,7 +39,7 @@ import java.util.function.Supplier;
 public final class ServerUIManager implements IWindowHandler {
     private static final Map<UUID, ModularUI> PLAYER_UIS = new HashMap<>();
     private static final Map<UUID, Map<Source, UIElement>> PLAYER_WINDOWS = new HashMap<>();
-    private static final List<Supplier<? extends Window>> PERSISTENT_WINDOWS =
+    private static final List<Function<Player, ? extends Window>> PERSISTENT_WINDOWS =
             new ArrayList<>();
 
     public static final ServerUIManager INSTANCE = new ServerUIManager();
@@ -237,12 +239,17 @@ public final class ServerUIManager implements IWindowHandler {
 
     @Override
     public void registerPersistentWindow(Supplier<? extends Window> factory) {
+        PERSISTENT_WINDOWS.add((_) -> Objects.requireNonNull(factory).get());
+    }
+
+    @Override
+    public void registerPersistentWindow(Function<Player, ? extends Window> factory) {
         PERSISTENT_WINDOWS.add(Objects.requireNonNull(factory));
     }
 
     private static void openPersistentWindows(ServerPlayer player) {
-        for (Supplier<? extends Window> factory : List.copyOf(PERSISTENT_WINDOWS)) {
-            attachInternal(player, null, factory.get().getChildren().getFirst());
+        for (Function<Player, ? extends Window> factory : List.copyOf(PERSISTENT_WINDOWS)) {
+            attachInternal(player, null, factory.apply(player).getChildren().getFirst());
         }
     }
 }

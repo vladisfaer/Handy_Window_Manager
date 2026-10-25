@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -272,6 +273,13 @@ public final class WindowManager implements IWindowHandler {
     @Override
     public void registerPersistentWindow(Supplier<? extends Window> factory) {
         PERSISTENT_WINDOWS.add(Objects.requireNonNull(factory));
+    }
+
+    @ApiStatus.Internal
+    @Override
+    public void registerPersistentWindow(Function<Player, ? extends Window> factory) {
+        Player player = Minecraft.getInstance().player;
+        PERSISTENT_WINDOWS.add(()->Objects.requireNonNull(factory).apply(player));
     }
 
     /**
