@@ -7,9 +7,11 @@ import com.lowdragmc.lowdraglib2.utils.ByteBufUtil;
 import com.ssc14.handy.window_manager.Handy;
 import com.ssc14.handy.window_manager.api.BlockEntityUIProvider;
 import com.ssc14.handy.window_manager.api.EntityUIProvider;
+import com.ssc14.handy.window_manager.api.IWindowHandler;
 import com.ssc14.handy.window_manager.api.ItemUIProvider;
 import com.ssc14.handy.window_manager.item.ServerItemRegistry;
 import com.ssc14.handy.window_manager.network.CloseWindowPayload;
+import com.ssc14.handy.window_manager.window.Window;
 import com.ssc14.handy.window_manager.window.access.Source;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.server.MinecraftServer;
@@ -23,15 +25,20 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.*;
+import java.util.function.Supplier;
 
 /**
  * Объект, управляющий серверными представлениями окон и их синхронизацией с клиентом
  *
  * @author vladisfaer
  */
-public final class ServerUIManager {
+public final class ServerUIManager implements IWindowHandler {
     private static final Map<UUID, ModularUI> PLAYER_UIS = new HashMap<>();
     private static final Map<UUID, Map<Source, UIElement>> PLAYER_WINDOWS = new HashMap<>();
+    private static final List<Supplier<? extends Window>> PERSISTENT_WINDOWS =
+            new ArrayList<>();
+
+    public static final ServerUIManager INSTANCE = new ServerUIManager();
 
     private ServerUIManager() {}
 
@@ -43,6 +50,7 @@ public final class ServerUIManager {
         // Attach the root to the MUI without creating a menu.
         mui.setMenu(null);
         PLAYER_UIS.put(player.getUUID(), mui);
+        openPersistentWindows(player);
     }
 
     public static ModularUI get(ServerPlayer player) {
@@ -73,7 +81,7 @@ public final class ServerUIManager {
      * Создаёт серверное представление окна без источника
      */
     public static void attach(ServerPlayer player, ModularUI windowUI) {
-        attachInternal(player, null, windowUI);
+        attachInternal(player, null, windowUI.ui.rootElement);
     }
 
     /**
@@ -83,24 +91,23 @@ public final class ServerUIManager {
         if (source == null) {
             throw new IllegalArgumentException("Source is required for a sourced UI");
         }
-        attachInternal(player, source, windowUI);
+        attachInternal(player, source, windowUI.ui.rootElement);
     }
 
-    private static void attachInternal(ServerPlayer player, Source source, ModularUI windowUI) {
+    private static void attachInternal(ServerPlayer player, Source source, UIElement windowUI) {
         ModularUI main = get(player);
         if (main == null) {
             throw new IllegalStateException("No server MUI for player " + player.getUUID());
         }
 
-        UIElement root = windowUI.ui.rootElement;
-        main.ui.rootElement.addChild(root);
+        main.ui.rootElement.addChild(windowUI);
 
         if (source != null) {
             Map<Source, UIElement> windows = PLAYER_WINDOWS.computeIfAbsent(
                     player.getUUID(), ignored -> new HashMap<>()
             );
-            UIElement previous = windows.put(source, root);
-            if (previous != null && previous != root) {
+            UIElement previous = windows.put(source, windowUI);
+            if (previous != null && previous != windowUI) {
                 previous.removeSelf();
             }
         }
@@ -220,5 +227,16 @@ public final class ServerUIManager {
             }
         }
         return null;
+    }
+
+    @Override
+    public void registerPersistentWindow(Supplier<? extends Window> factory) {
+        PERSISTENT_WINDOWS.add(Objects.requireNonNull(factory));
+    }
+
+    private static void openPersistentWindows(ServerPlayer player) {
+        for (Supplier<? extends Window> factory : List.copyOf(PERSISTENT_WINDOWS)) {
+            attachInternal(player, null, factory.get().getChildren().getFirst());
+        }
     }
 }
