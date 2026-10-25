@@ -9,6 +9,7 @@ import com.ssc14.handy.window_manager.api.BlockEntityUIProvider;
 import com.ssc14.handy.window_manager.api.EntityUIProvider;
 import com.ssc14.handy.window_manager.api.IWindowHandler;
 import com.ssc14.handy.window_manager.api.ItemUIProvider;
+import com.ssc14.handy.window_manager.event.RegisterPersistentWindowsEvent;
 import com.ssc14.handy.window_manager.item.ServerItemRegistry;
 import com.ssc14.handy.window_manager.network.CloseWindowPayload;
 import com.ssc14.handy.window_manager.window.Window;
@@ -20,6 +21,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.ApiStatus;
@@ -40,7 +42,11 @@ public final class ServerUIManager implements IWindowHandler {
 
     public static final ServerUIManager INSTANCE = new ServerUIManager();
 
-    private ServerUIManager() {}
+    private ServerUIManager() {
+        NeoForge.EVENT_BUS.post(
+                new RegisterPersistentWindowsEvent(this)
+        );
+    }
 
     public static void create(ServerPlayer player) {
         Handy.LOGGER.debug("Handy Sync: Server MUI Created");

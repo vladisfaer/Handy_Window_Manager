@@ -198,15 +198,11 @@ private static int getClicks(UUID id) {
 Постоянные окна - это окна, которые открываются сразу при заходе в мир и не закрываются до выхода из мира.
 Они могут быть полезны для создания Hud.
 
-Для того чтобы добавить своё постоянное окно, надо зарегистрировать его в оконном менеджере после загрузки ресурсов, но до захода в мир.
-Для этого используется метод registerPersistentWindow, который принимает фабрику окна
+Для того чтобы добавить своё постоянное окно, надо зарегистрировать его с помощью события `RegisterPersistentWindowsEvent`
 ```java
-private static boolean initialized = false;
 @SubscribeEvent
-public static void onScreenOpening(ClientResourceLoadFinishedEvent event) {
-    if (initialized) return;
-    initialized = true;
-    WindowManager.INSTANCE.registerPersistentWindow(MainMenuOpenHandler::createHotbar);
+public static void onPersistentWindowsRegistration(RegisterPersistentWindowsEvent event) {
+    event.getManager().registerPersistentWindow(MainMenuOpenHandler::createHotbar);
 }
 ```
 Следующий пример создаёт недвижимое окно примерно там же, где находится хотбар:
