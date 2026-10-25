@@ -268,6 +268,7 @@ public final class WindowManager implements IWindowHandler {
      * <p>Постоянные окна - это окна, которые автоматически открываются при входе в игру и никогда не закрываются
      * @param factory Фабрика, предоставляющая окно
      */
+    @ApiStatus.Internal
     @Override
     public void registerPersistentWindow(Supplier<? extends Window> factory) {
         PERSISTENT_WINDOWS.add(Objects.requireNonNull(factory));
