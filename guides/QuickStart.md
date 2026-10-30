@@ -4,25 +4,26 @@
 ## Настройка
 Для начала подключите подходящую версию LDLib2
 
-В neoforged.mods.toml
+После этого в neoforged.mods.toml
 ```toml
 [[dependencies.${mod_id}]]
 modId="handy_wm"
 type="required"
-versionRange="[0.1.2,)"
+versionRange="[1.2.1,)"
 ordering="AFTER"
 side="BOTH"
 ```
-Перенесите папку с исходным кодом Handy в корень проекта
-После этого в build.gradle
+В build.gradle
 ```groovy
-dependencies {
-    implementation project(':handy')
+repositories {
+    maven {
+        name = 'Handy'
+        url = uri('https://vladisfaer.github.io/handy/repository/')
+    }
 }
-```
-И в settings.gradle
-```groovy
-include 'utils'
+dependencies {
+    implementation "com.ssc14.handy:window-manager:1.2.1"
+}
 ```
 
 ## Первое окно
@@ -50,7 +51,6 @@ public class ExampleItem extends ItemUIProvider {
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         if (level.isClientSide()) {
             openUI(player.getItemInHand(hand), player);
-            GuiMode.enter();
         }
         return InteractionResult.SUCCESS;
     }
